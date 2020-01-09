@@ -1,2 +1,1 @@
-# xero-oauth
-Get Xero oauth tokens
+# xero-oauth-tokens-site
