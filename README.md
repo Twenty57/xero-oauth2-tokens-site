@@ -16,3 +16,7 @@ Step 2: The user fills in the client secret of their Xero App and then requests 
 ## Source code
 
 This repo contains the web site. The API runs on [Linx](https://linx.software) and the Linx solution can be found at https://github.com/Twenty57/xero-oauth2-tokens-api
+
+## Live version
+
+A live version of this is available at https://xerotokengenerator.z16.web.core.windows.net/.

@@ -42,14 +42,14 @@ function App() {
       <h4>How it works</h4>
       <p>Prerequisites: 
         <ul>
-          <li>A <a href="https://developer.xero.com/myapps/">Xero App</a> that you control.</li>
-          <li>An OAuth2 redirect URI of {window.location.origin + "/auth"} setup on the Xero App.</li>
+          <li>A Xero App that you control.</li>
+          <li>An OAuth2 redirect URI setup on the Xero App pointing to {window.location.origin + "/auth"}.</li>
           <li>User access to the Xero organisation that you want to connect to.</li>
         </ul>
       </p>
-      <p>Step 1: You provide the client id of your Xero App and we connect to Xero. Xero asks you to login and approve the connection and then 
+      <p>Step 1: Provide the client id of your Xero App and connect to Xero. Xero will ask you to login and approve the connection and then 
         redirects with a code.</p>
-      <p>Step 2: You provide the client secret of your Xero App and we request the access tokens from Xero using the code provided in step 1. 
+      <p>Step 2: Provide the client secret of your Xero App and get the access tokens from Xero. 
         The request can only be done server side so we call an API endpoint hosted on a <a href="https://linx.software">Linx Server</a> to forward 
         the request and return the tokens. No data is saved or logged on the Linx Server.</p>
       <h4>Source code</h4>

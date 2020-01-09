@@ -4,8 +4,10 @@ function Tokens({token}){
     return(
         <div>
             <h3>Tokens</h3>
-            <p>Access token:<br></br>{token.access_token}</p>
-            <p>Refresh token:<br></br>{token.refresh_token}</p>
+            <h4>Access token</h4>
+            <p>{token.access_token}</p>
+            <h4>Refresh token</h4>
+            <p>{token.refresh_token}</p>
         </div>
     )
 }
