@@ -7,7 +7,7 @@ function ClientId({clientId, setClientId}){
             "response_type": "code",
             "client_id":  clientId,
             "redirect_uri": window.location.origin + "/auth",
-            "scope": "offline_access accounting.transactions",
+            "scope": "offline_access accounting.transactions accounting.reports.read accounting.journals.read accounting.settings accounting.contacts accounting.attachments",
             "state": "test"
         });
         window.location = `https://login.xero.com/identity/connect/authorize?${query.toString()}`;
