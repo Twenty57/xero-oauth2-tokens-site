@@ -1,11 +1,15 @@
 import React, {useState, useCallback} from 'react';
+import Preamble from '../Preamble';
 import ClientId from '../ClientId';
 import ClientSecret from '../ClientSecret';
 import Tokens from '../Tokens';
 import Tenants from '../Tenants';
+import Scope from '../Scope';
+import * as utils from './utils';
 
 function App() {
-  const [clientId, setClientId] = useState(sessionStorage.getItem("clientId")||"");
+  const [clientId, setClientId] = useState(utils.GetClientIdFromStore());
+  const [scopes, setScopes] = useState(utils.GetScopesFromStore());
   const [code, setCode] = useState("");
   const [clientSecret, setClientSecret] = useState("");
   const [token, setToken] = useState("");
@@ -14,12 +18,13 @@ function App() {
   const [isGettingTenants, setIsGettingTenants] = useState(false);
 
   React.useEffect(()=>{
-      sessionStorage.setItem("clientId", clientId);
-  }, [clientId]);
+    utils.StoreScopes(scopes);
+    utils.StoreClientId(clientId);
+  }, [scopes, clientId]);
 
   const updateTokens = useCallback(async () => {
     try{
-      const token = await GetToken(clientId, clientSecret, code);
+      const token = await utils.GetToken(clientId, clientSecret, code);
       setToken(token);
       setIsGettingTenants(true);
     }
@@ -40,7 +45,7 @@ function App() {
 
   const updateTenants = useCallback(async () => {
     try{
-      const tenants = await GetTenants(token.access_token);
+      const tenants = await utils.GetTenants(token.access_token);
       setTenants(tenants);
     }
     catch{
@@ -64,71 +69,20 @@ function App() {
 
   return (
     <div>
-      <h1>Xero OAuth2 Access Tokens.</h1>
-      <p>Use this tool to get Xero access tokens for your <a href="https://developer.xero.com/myapps/">Xero Apps</a> that do not have user interfaces e.g.
-        integrations using the Xero API running on servers in the background.
-      </p>
-      <h4>How it works</h4>
-      <p>Prerequisites:</p>
-      <ul>
-        <li>A Xero App that you control.</li>
-        <li>An OAuth2 redirect URI setup on the Xero App pointing to {window.location.origin + "/auth"} .</li>
-        <li>User access to the Xero organisation that you want to connect to.</li>
-      </ul>
-      <p>Step 1: Provide the client id of your Xero App and connect to Xero. Xero will ask you to login and approve the connection and then 
-        redirects with a code.</p>
-      <p>Step 2: Provide the client secret of your Xero App and get the access tokens from Xero. 
-        The request can only be done server side so we call an API hosted on a <a href="https://linx.software">Linx Server</a> to forward 
-        the request and return the tokens. No client data or tokens are saved or logged on the Linx Server.</p>
-      <p>Step 3: The tenants connected to your Xero App are requested and displayed. A tenant id is required to make calls to Xero APIs. 
-        This request is also done through the API hosted on Linx.
-      </p>
-      <h4>Source code</h4>
-      <ul>
-        <li>Web site: <a href="https://github.com/Twenty57/xero-oauth2-tokens-site">https://github.com/Twenty57/xero-oauth2-tokens-site</a></li>
-        <li>API: <a href="https://github.com/Twenty57/xero-oauth2-tokens-api">https://github.com/Twenty57/xero-oauth2-tokens-api</a></li>
-      </ul>
-      <h4>Warning</h4>
-      <p>Your Xero App credentials and Xero organisation access tokens are visible in your browser and flows through an API endpoint not 
-        under your control. Only use this for testing purposes using a demo company. For production use your 
-        own <a href="https://linx.software">Linx Server</a> to request the tokens.</p>
-      <div>
-        <ClientId clientId={clientId} setClientId={setClientId}/>
-        {code !== "" && <ClientSecret 
-                          clientSecret={clientSecret} 
-                          setClientSecret={setClientSecret}
-                          getTokens={()=>setIsGettingToken(true)}>
-                        </ClientSecret>}
-        {isGettingToken === true && <p>getting the tokens...</p>}
-        {token !== "" && <Tokens token={token} />}
-        {isGettingTenants === true && <p>getting the tenants...</p>}
-        {tenants !== "" && <Tenants tenants={tenants} />}
-      </div>
+      <Preamble/>
+      <Scope scopes={scopes} setScopes={setScopes}/>
+      <ClientId clientId={clientId} setClientId={setClientId} handleConnect={()=>utils.ConnectToXero(clientId, scopes.join(" "))}/>
+      {code !== "" && <ClientSecret 
+                        clientSecret={clientSecret} 
+                        setClientSecret={setClientSecret}
+                        getTokens={()=>setIsGettingToken(true)}>
+                      </ClientSecret>}
+      {isGettingToken === true && <p>getting the tokens...</p>}
+      {token !== "" && <Tokens token={token} />}
+      {isGettingTenants === true && <p>getting the tenants...</p>}
+      {tenants !== "" && <Tenants tenants={tenants} />}
     </div>
   );
-}
-
-async function GetToken(clientId, clientSecret, code){
-  let config = {
-    method: "POST",
-    body: JSON.stringify({
-      "clientId": clientId,
-      "clientSecret": clientSecret,
-      "code": code,
-      "redirectUri": window.location.origin + "/auth"
-    }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-
-  let response = await fetch(process.env.REACT_APP_API_HOST + "/token", config);
-  return response.json();
-}
-
-async function GetTenants(accessToken){
-  let response = await fetch(process.env.REACT_APP_API_HOST + `/tenants?accessToken=${accessToken}`);
-  return response.json();
 }
 
 export default App;
