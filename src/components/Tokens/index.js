@@ -5,9 +5,12 @@ function Tokens({token}){
         <div>
             <h3>Tokens</h3>
             <h4>Access token</h4>
-            <p>{token.access_token}</p>
+            <p>{token.access_token}&nbsp;
+            <button onClick={()=>navigator.clipboard.writeText(token.access_token)}>copy</button></p>
+
             <h4>Refresh token</h4>
-            <p>{token.refresh_token}</p>
+            <p>{token.refresh_token}&nbsp;
+            <button onClick={()=>navigator.clipboard.writeText(token.refresh_token)}>copy</button></p>
         </div>
     )
 }

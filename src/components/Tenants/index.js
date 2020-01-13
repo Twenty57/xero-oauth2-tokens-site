@@ -4,7 +4,8 @@ function Tenants({tenants}){
     const tenantRows = tenants.map((tenant, index) => {
             return(
                 <tr>
-                    <td>{tenant.tenantId}</td>
+                    <td>{tenant.tenantId}&nbsp;
+                    <button onClick={()=>navigator.clipboard.writeText(tenant.tenantId)}>copy</button></td>
                     <td>{tenant.tenantType}</td>
                 </tr>
             )
