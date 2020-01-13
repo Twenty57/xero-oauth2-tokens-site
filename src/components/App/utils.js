@@ -37,7 +37,7 @@ export async function GetToken(clientId, clientSecret, code){
   }
   
   export function GetClientIdFromStore(){
-    return sessionStorage.getItem("clientId"||"");
+    return sessionStorage.getItem("clientId")||"";
   }
   
   export function StoreScopes(scopes){

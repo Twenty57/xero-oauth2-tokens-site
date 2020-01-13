@@ -40,8 +40,9 @@ const CheckboxList = ({scopes, handleChange})=>
             <ul style={{listStyle:"none"}}>
             {scopes.map(item => (
                 <li key={item.name}>
+                    <label>
                     <input type="checkbox" name={item.name} checked={item.checked} onChange={handleChange}/>
-                    <label>{item.name}</label>
+                    {item.name}</label>
                 </li>
             ))}
             </ul>
@@ -67,7 +68,8 @@ function Scope({scopes, setScopes}){
         <div>
             <h3>Step 1: Select the scopes required by your Xero App</h3>
             <p>'offline_access' scope is automatically included. For more about scopes 
-                see the <a href="https://developer.xero.com/documentation/oauth2/scopes">Xero scopes documentation</a></p>
+                see the <a target="_blank" rel="noopener noreferrer" 
+                href="https://developer.xero.com/documentation/oauth2/scopes">Xero scopes documentation</a></p>
             <CheckboxList scopes={createCheckedScopes(accountingScopes)} handleChange={handleChange}/>
             <CheckboxList scopes={createCheckedScopes(payrollScopes)} handleChange={handleChange}/>
             <CheckboxList scopes={createCheckedScopes(otherScopes)} handleChange={handleChange}/>
