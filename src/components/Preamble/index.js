@@ -11,7 +11,7 @@ function Preamble(){
         <h4>How it works</h4>
         <p>Prerequisites:</p>
         <ul>
-        <li>A Xero App that you control.</li>
+        <li>A Xero App, its client id and client secret.</li>
         <li>An OAuth2 redirect URI setup on the Xero App pointing to {window.location.origin + "/auth"} .</li>
         <li>User access to the Xero organisation that you want to connect to.</li>
         </ul>
