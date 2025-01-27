@@ -12,6 +12,10 @@
     "@testing-library/react": "^9.3.3",
     "@testing-library/user-event": "^7.1.2"
   },
+  "overrides": {
+    "postcss": "^8.4.33",
+    "nth-check": "^2.0.1"
+  },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
